@@ -107,7 +107,7 @@ def main():
     parser = argparse.ArgumentParser(
         description='Print some flowers.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('text', metavar='t', type=str, nargs='+',
+    parser.add_argument('text', metavar='t', type=str,
                         help='The text to print, letters must be within : %s'
                         % (', '.join(keys)))
     parser.add_argument('--spaced', action='store_true', dest='spaced',
@@ -116,8 +116,11 @@ def main():
     args = parser.parse_args()
 
     # TEXT PREPARATION
-    if len(sys.argv) == 2:
+    if args.spaced:
         text = ' '.join(list(args.text))
+    else:
+        text = str(args.text)
+
     formated = []
     for idx, letter in enumerate(text):
         fg = fgflowers[idx % len(fgflowers)]
