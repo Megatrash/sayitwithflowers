@@ -1,22 +1,7 @@
 From @euhmeuh initial version.
 Print text using flowers for slack.
 
-
-
-
-
-Works with words such as :
-cool
-ok
-fork
-code
-
-Or any words containing letters :
-c, e, d, f, i, h, k, l, o, r, u
-
-
-
-
+Works with the alphabet, space and exclamation point.
 
 Usage: flowers.py [-h] [--spaced] t
 
