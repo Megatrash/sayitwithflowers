@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import sys
 import itertools
 import argparse
+import numpy as np
 
 # CONSTS
 flowers = {
@@ -17,30 +17,109 @@ bgflower = 'b'
 border = '.'
 
 # ALPHABET
-letters = {
+alphabet = {
+    'a':
+    [[0, 1, 1, 0],
+     [1, 0, 0, 1],
+     [1, 1, 1, 1],
+     [1, 0, 0, 1],
+     [1, 0, 0, 1]],
     'c':
-    [[1, 1, 1, 1], [1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [1, 1, 1, 1]],
+    [[1, 1, 1, 1],
+     [1, 0, 0, 0],
+     [1, 0, 0, 0],
+     [1, 0, 0, 0],
+     [1, 1, 1, 1]],
     'd':
-    [[1, 1, 1, 0], [1, 0, 0, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 0]],
+    [[1, 1, 1, 0],
+     [1, 0, 0, 1],
+     [1, 0, 0, 1],
+     [1, 0, 0, 1],
+     [1, 1, 1, 0]],
     'e':
-    [[1, 1, 1, 1], [1, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [1, 1, 1, 1]],
+    [[1, 1, 1, 1],
+     [1, 0, 0, 0],
+     [1, 1, 1, 0],
+     [1, 0, 0, 0],
+     [1, 1, 1, 1]],
     'f':
-    [[1, 1, 1, 1], [1, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [1, 0, 0, 0]],
+    [[1, 1, 1, 1],
+     [1, 0, 0, 0],
+     [1, 1, 1, 0],
+     [1, 0, 0, 0],
+     [1, 0, 0, 0]],
     'h':
-    [[1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1]],
+    [[1, 0, 0, 1],
+     [1, 0, 0, 1],
+     [1, 1, 1, 1],
+     [1, 0, 0, 1],
+     [1, 0, 0, 1]],
     'i':
-    [[1, 1, 1], [0, 1, 0], [0, 1, 0], [0, 1, 0], [1, 1, 1]],
+    [[1, 1, 1],
+     [0, 1, 0],
+     [0, 1, 0],
+     [0, 1, 0],
+     [1, 1, 1]],
     'k':
-    [[1, 0, 0, 1], [1, 0, 1, 0], [1, 1, 0, 0], [1, 0, 1, 0], [1, 0, 0, 1]],
+    [[1, 0, 0, 1],
+     [1, 0, 1, 0],
+     [1, 1, 0, 0],
+     [1, 0, 1, 0],
+     [1, 0, 0, 1]],
     'l':
-    [[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [1, 1, 1, 1]],
+    [[1, 0, 0, 0],
+     [1, 0, 0, 0],
+     [1, 0, 0, 0],
+     [1, 0, 0, 0],
+     [1, 1, 1, 1]],
+    'n':
+    [[1, 0, 0, 1],
+     [1, 1, 0, 1],
+     [1, 0, 0, 1],
+     [1, 0, 1, 1],
+     [1, 0, 0, 1]],
     'o':
-    [[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]],
+    [[1, 1, 1, 1],
+     [1, 0, 0, 1],
+     [1, 0, 0, 1],
+     [1, 0, 0, 1],
+     [1, 1, 1, 1]],
+    'p':
+    [[1, 1, 1, 0],
+     [1, 0, 0, 1],
+     [1, 1, 1, 0],
+     [1, 0, 0, 1],
+     [1, 0, 0, 0]],
     'r':
-    [[1, 1, 1, 0], [1, 0, 0, 1], [1, 1, 1, 0], [1, 0, 1, 0], [1, 0, 0, 1]],
+    [[1, 1, 1, 0],
+     [1, 0, 0, 1],
+     [1, 1, 1, 0],
+     [1, 0, 1, 0],
+     [1, 0, 0, 1]],
+    's':
+    [[0, 1, 1, 1],
+     [1, 0, 0, 0],
+     [1, 1, 1, 0],
+     [0, 0, 0, 1],
+     [1, 1, 1, 0]],
+    't':
+    [[1, 1, 1],
+     [0, 1, 0],
+     [0, 1, 0],
+     [0, 1, 0],
+     [0, 1, 0]],
     'u':
-    [[1, 0, 0, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 0, 0, 1], [1, 1, 1, 1]],
-    ' ': [[0], [0], [0], [0], [0]]
+    [[1, 0, 0, 1],
+     [1, 0, 0, 1],
+     [1, 0, 0, 1],
+     [1, 0, 0, 1],
+     [1, 1, 1, 1]],
+    ' ':
+    [[0],
+     [0],
+     [0],
+     [0],
+     [0]]
     }
 
 
@@ -98,9 +177,21 @@ def frame_array_to_string(text):
     return text_string
 
 
+def check_text_letters(text):
+    letters_not_available = []
+    for letter in text:
+        if letter not in alphabet.keys():
+            letters_not_available.append(letter)
+    if len(letters_not_available):
+        print "One or more letters are not available. "\
+            "Please contribute : %s" % letters_not_available
+        return False
+    return True
+
+
 def main():
     # Prepare keys
-    keys = letters.keys()
+    keys = alphabet.keys()
     keys.remove(' ')
     keys.append('<space>')
 
@@ -121,11 +212,19 @@ def main():
     else:
         text = str(args.text)
 
+    if not check_text_letters(text):
+        return
+
     formated = []
+    letters_not_available = [letter not in keys for letter in text]
+    if np.any(letters_not_available):
+        print "One or more letters are not available. "\
+            "Please contribute : %s" % letters_not_available
+
     for idx, letter in enumerate(text):
         fg = fgflowers[idx % len(fgflowers)]
         formated = zip_arrays(formated, flower_letter_grid(
-            letters[letter], fg, bgflower))
+            alphabet[letter], fg, bgflower))
 
     text = full_framing(formated)
     text_string = frame_array_to_string(text)

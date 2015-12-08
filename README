@@ -18,13 +18,13 @@ c, e, d, f, i, h, k, l, o, r, u
 
 
 
-Usage: flowers.py [-h] [--spaced] t [t ...]
+Usage: flowers.py [-h] [--spaced] t
 
 Print some flowers.
 
 positional arguments:
-  t           The text to print, letters must be within : c, e, d, f, i, h, k,
-              l, o, r, u, <space>
+  t           The text to print, letters must be within : a, c, e, d, f, i, h,
+              k, l, o, s, r, u, t, <space>
 
 optional arguments:
   -h, --help  show this help message and exit
