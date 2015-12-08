@@ -73,11 +73,11 @@ alphabet = {
      [1, 0, 0, 0],
      [1, 1, 1, 1]],
     'n':
-    [[1, 0, 0, 1],
-     [1, 1, 0, 1],
-     [1, 0, 0, 1],
-     [1, 0, 1, 1],
-     [1, 0, 0, 1]],
+    [[1, 0, 0, 0, 1],
+     [1, 1, 0, 0, 1],
+     [1, 0, 1, 0, 1],
+     [1, 0, 0, 1, 1],
+     [1, 0, 0, 0, 1]],
     'o':
     [[1, 1, 1, 1],
      [1, 0, 0, 1],
@@ -88,7 +88,7 @@ alphabet = {
     [[1, 1, 1, 0],
      [1, 0, 0, 1],
      [1, 1, 1, 0],
-     [1, 0, 0, 1],
+     [1, 0, 0, 0],
      [1, 0, 0, 0]],
     'r':
     [[1, 1, 1, 0],
@@ -216,11 +216,6 @@ def main():
         return
 
     formated = []
-    letters_not_available = [letter not in keys for letter in text]
-    if np.any(letters_not_available):
-        print "One or more letters are not available. "\
-            "Please contribute : %s" % letters_not_available
-
     for idx, letter in enumerate(text):
         fg = fgflowers[idx % len(fgflowers)]
         formated = zip_arrays(formated, flower_letter_grid(
