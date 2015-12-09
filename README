@@ -8,8 +8,7 @@ Usage: flowers.py [-h] [--spaced] t
 Print some flowers.
 
 positional arguments:
-  t           The text to print, letters must be within : a, c, e, d, f, i, h,
-              k, l, o, s, r, u, t, <space>
+  t           The text to print (currently supports English alphabet only)
 
 optional arguments:
   -h, --help  show this help message and exit
