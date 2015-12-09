@@ -3,12 +3,15 @@ Print text using flowers for slack.
 
 Works with the alphabet, space and exclamation point.
 
-Usage: flowers.py [-h] [--spaced] t
+Usage: sayitwith.py [-h] [--spaced] type text
 
-Print some flowers.
+Print some things.
 
 positional arguments:
-  t           The text to print (currently supports English alphabet only)
+  type        Say it with what ? flowers, catz
+  text        The text to print, letters must be within : !, *, 3, <, a, c, b,
+              e, d, g, f, i, h, k, j, m, l, o, n, q, p, s, r, u, t, w, v, y,
+              x, z, <space>
 
 optional arguments:
   -h, --help  show this help message and exit
