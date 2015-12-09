@@ -2,9 +2,10 @@
 
 import itertools
 import argparse
-import numpy as np
 
 # CONSTS
+types = ['flowers', 'catz']
+
 flowers = {
     'h': 'hibiscus',
     'b': 'blossom',
@@ -12,8 +13,20 @@ flowers = {
     't': 'tulip',
     'c': 'cherry_blossom',
     '.': 'herb'}
+
 fgflowers = ['h', 'r', 't', 'c']
 bgflower = 'b'
+
+cats = {
+    'c': 'cat',
+    '2': 'cat2',
+    's': 'smirk_cat',
+    'k': 'kissing_cat',
+    'm': 'smiley_cat',
+    '.': 'herb'}
+
+fgcats = ['c', 'k', 's', 'm']
+bgcat = '2'
 border = '.'
 
 # ALPHABET
@@ -230,26 +243,26 @@ def flower_letter_grid(letter, style, bg):
 
 
 # FRAMING
-def lateral_framing(line):
-    return border + bgflower + line + bgflower + border
+def lateral_framing(line, bgsmiley, bordersmiley):
+    return bordersmiley + bgsmiley + line + bgsmiley + bordersmiley
 
 
-def vertical_framing(lenline, orientation):
-    border_rule = border * (lenline + 4)
-    fill = border + (bgflower * (lenline + 2)) + border
+def vertical_framing(lenline, orientation, bgsmiley, bordersmiley):
+    border_rule = bordersmiley * (lenline + 4)
+    fill = border + (bgsmiley * (lenline + 2)) + bordersmiley
     if orientation == 't':
         return [border_rule, fill]
     else:
         return [fill, border_rule]
 
 
-def full_framing(formated):
+def full_framing(formated, bgsmiley, bordersmiley):
     text = []
-    for vf in vertical_framing(len(formated[0]), 't'):
+    for vf in vertical_framing(len(formated[0]), 't', bgsmiley, bordersmiley):
         text.append(vf)
     for line in formated:
-        text.append(lateral_framing(''.join(line)))
-    for vf in vertical_framing(len(formated[0]), 'b'):
+        text.append(lateral_framing(''.join(line), bgsmiley, bordersmiley))
+    for vf in vertical_framing(len(formated[0]), 'b', bgsmiley, bordersmiley):
         text.append(vf)
     return text
 
@@ -273,6 +286,14 @@ def check_text_letters(text):
     return True
 
 
+def check_type(smileytype):
+    if smileytype not in types:
+        print "The type is not available. "\
+            "Please contribute. Available types : %s" % (types.keys())
+        return False
+    return True
+
+
 def main():
     # Prepare keys
     keys = alphabet.keys()
@@ -280,15 +301,23 @@ def main():
     keys.append('<space>')
 
     parser = argparse.ArgumentParser(
-        description='Print some flowers.',
+        description='Print some things.',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('text', metavar='t', type=str,
+    parser.add_argument('type', metavar='type', type=str,
+                        help='Say it with what ? %s'
+                        % (', '.join(types)))
+    parser.add_argument('text', metavar='text', type=str,
                         help='The text to print, letters must be within : %s'
                         % (', '.join(keys)))
     parser.add_argument('--spaced', action='store_true', dest='spaced',
                         default=False, help='Spaces between letters')
 
     args = parser.parse_args()
+
+    smileytype = args.type
+    # CHECK GIVEN TYPE
+    if not check_type(smileytype):
+        return
 
     # TEXT PREPARATION
     if args.spaced:
@@ -299,13 +328,22 @@ def main():
     if not check_text_letters(text):
         return
 
+    if smileytype == 'catz':
+        smileys = cats
+        fgsmileys = fgcats
+        bgsmiley = bgcat
+    elif smileytype == 'flowers':
+        smileys = flowers
+        fgsmileys = fgflowers
+        bgsmiley = bgflower
+
     formated = []
     for idx, letter in enumerate(text):
-        fg = fgflowers[idx % len(fgflowers)]
+        fg = fgsmileys[idx % len(fgsmileys)]
         formated = zip_arrays(formated, flower_letter_grid(
-            alphabet[letter], fg, bgflower))
+            alphabet[letter], fg, bgsmiley))
 
-    text = full_framing(formated)
+    text = full_framing(formated, bgsmiley, border)
     text_string = frame_array_to_string(text)
 
     # FLOWING PRINTING
@@ -314,7 +352,7 @@ def main():
         if f == '\n':
             result += f
             continue
-        result += ':' + flowers[f] + ': '
+        result += ':' + smileys[f] + ': '
 
     print result
 
